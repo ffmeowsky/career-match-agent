@@ -44,7 +44,7 @@ career-match-agent/
 
 ## 作者
 
-秦俪萍 (AI PM 应届生)
+ffmeowsky
 
 ## 许可
 
