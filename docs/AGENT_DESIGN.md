@@ -494,7 +494,7 @@ User Prompt:
 {
   "trace_id": "20260526-233000-bytedance",
   "input": {
-    "resume_name": "秦俪萍",
+    "resume_name": "用户",
     "jd_company": "字节跳动",
     "jd_role": "豆包 AI 产品经理（应届生）"
   },
@@ -509,7 +509,7 @@ User Prompt:
       "act": {
         "tool": "score_skill_match",
         "args": {
-          "resume": "Resume(name=秦俪萍, ...)",
+          "resume": "Resume(name=用户, ...)",
           "jd": "JobDescription(company=字节跳动, ...)"
         },
         "timestamp": "2026-05-26T23:30:01",

@@ -461,7 +461,7 @@ def generate_cover_letter(
         result = CoverLetter(
             greeting=data.get("greeting", "面试官你好，"),
             body=data.get("body", ""),
-            closing=data.get("closing", "秦俪萍"),
+            closing=data.get("closing", "求职者"),
             word_count=int(data.get("word_count", 0)),
         )
         logger.info(f"generate_cover_letter 完成 | 字数={result.word_count}")

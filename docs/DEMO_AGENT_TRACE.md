@@ -2,7 +2,7 @@
 
 > **目的**：在写代码之前，模拟 Agent 完整运行一次，确认"思考方式"符合预期。
 > **JD**：字节跳动 · 豆包 AI 产品经理（应届生）
-> **简历**：秦俪萍 · CityU(DG) EM 工程管理硕士 2026 届
+> **简历**：用户 · CityU(DG) EM 工程管理硕士 2026 届
 > **模拟时间**：2026-05-26
 
 ---
@@ -10,7 +10,7 @@
 ## 输入
 
 ```
-Resume: 秦俪萍, CityU(DG) EM工程管理硕士, 无实习, 项目=CareerMatch Agent,
+Resume: 用户, CityU(DG) EM工程管理硕士, 无实习, 项目=CareerMatch Agent,
         技能=Python(基础)+产品需求分析(熟练)+LLM概念理解
 
 JobDescription: 字节跳动, 豆包 AI PM 应届生,
@@ -102,7 +102,7 @@ Round 2 · 23:30:04.400
 ┌─ ACT ────────────────────────────────────────────────────────────
 │ tool: score_skill_match
 │ args:
-│   resume: Resume(name="秦俪萍", education=[...], skills=[...], projects=[...])
+│   resume: Resume(name="用户", education=[...], skills=[...], projects=[...])
 │   jd: JobDescription(company="字节跳动", role="豆包 AI PM", requirements=[...])
 │ elapsed: 4.1s | tokens: prompt=2800 completion=950
 └──────────────────────────────────────────────────────────────────
@@ -165,7 +165,7 @@ Round 3 · 23:30:08.500
 │   match_score: {overall: 74, dimensions: [...]}
 │   project_relevance: [{project_name: "CareerMatch Agent", relevance_score: 4.5, ...}]
 │   jd: JobDescription(company="字节跳动", ...)
-│   resume: Resume(name="秦俪萍", ...)
+│   resume: Resume(name="用户", ...)
 │ elapsed: 3.8s | tokens: prompt=2100 completion=780
 └──────────────────────────────────────────────────────────────────
 
@@ -232,7 +232,7 @@ Round 4 · 23:30:12.300
 ┌─ ACT ────────────────────────────────────────────────────────────
 │ tool: extract_unique_advantages
 │ args:
-│   resume: Resume(name="秦俪萍", ...)
+│   resume: Resume(name="用户", ...)
 │   jd: JobDescription(company="字节跳动", ...)
 │   match_score: {overall: 74, ...}
 │   project_relevance: [{project_name: "CareerMatch Agent", relevance_score: 4.5, ...}]
@@ -304,7 +304,7 @@ Round 5 · 23:30:15.800
 │   skill_gaps: [{gap: "缺少跨职能协作经验", ...}, ...]
 │   advantages: [{title: "有自己的 AI 产品作品", ...}, ...]
 │   match_score: {overall: 74, ...}
-│   resume: Resume(name="秦俪萍", ...)
+│   resume: Resume(name="用户", ...)
 │ elapsed: 4.5s | tokens: prompt=2500 completion=1100
 └──────────────────────────────────────────────────────────────────
 

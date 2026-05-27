@@ -97,7 +97,7 @@ CompanyBrief     # 公司评估简报
 
 **Day 13 详细**：每个工具是一个函数（输入 Pydantic → LLM 调用 → 输出 Pydantic）。工具之间不允许互相调用（单一职责），由 engine 统一调度。每个工具单独写单元测试（mock LLM 响应），通过后再进入 Day 14。
 
-**Day 14 详细**：`engine.py` 是核心——实现 ReAct 循环。Think 调用 LLM（传入当前状态 + 可用工具列表）→ 解析 LLM 返回的 tool_call → Act 调用对应工具 → Observe 校验结果 → Decide 判断继续/终止。下午联调 `renderer.py`，晚上用字节豆包 JD + 秦俪萍简历端到端跑通，Trace 格式参照 `docs/DEMO_AGENT_TRACE.md`。
+**Day 14 详细**：`engine.py` 是核心——实现 ReAct 循环。Think 调用 LLM（传入当前状态 + 可用工具列表）→ 解析 LLM 返回的 tool_call → Act 调用对应工具 → Observe 校验结果 → Decide 判断继续/终止。下午联调 `renderer.py`，晚上用字节豆包 JD + 用户简历端到端跑通，Trace 格式参照 `docs/DEMO_AGENT_TRACE.md`。
 
 **设计参考**：`docs/AGENT_DESIGN.md`（工具设计 + 异常处理策略）和 `docs/DEMO_AGENT_TRACE.md`（6 轮 Trace 模拟）。
 

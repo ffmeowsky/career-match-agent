@@ -106,13 +106,13 @@ class Resume(BaseModel):
     model_config = {
         "json_schema_extra": {
             "example": {
-                "name": "秦俪萍",
-                "email": "liping.qin@example.com",
+                "name": "用户",
+                "email": "user@example.com",
                 "target_role": "AI PM",
                 "education": [{
-                    "school": "CityU(DG)",
+                    "school": "Example University",
                     "degree": "master",
-                    "major": "工程管理",
+                    "major": "Computer Science",
                     "start_date": "2025.09",
                     "end_date": "2026.07",
                     "highlights": ["CareerMatch Agent 项目"]
@@ -246,7 +246,7 @@ class CoverLetter(BaseModel):
     """个性化求职信。"""
     greeting: str = Field(default="面试官你好，", description="称呼")
     body: str = Field(description="正文")
-    closing: str = Field(default="秦俪萍", description="署名")
+    closing: str = Field(default="用户", description="署名")
     word_count: int = Field(default=0, description="正文字数")
 
 
@@ -298,14 +298,14 @@ if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
 
     r = Resume(
-        name="秦俪萍",
-        email="liping.qin@example.com",
+        name="用户",
+        email="user@example.com",
         target_role="AI PM",
         education=[
             ResumeEducation(
-                school="CityU(DG)",
+                school="Example University",
                 degree=EducationLevel.MASTER,
-                major="工程管理",
+                major="Computer Science",
                 start_date="2025.09",
                 end_date="2026.07",
                 highlights=["CareerMatch Agent"]

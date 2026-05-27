@@ -29,7 +29,7 @@
 | 2026-05-26 | 新增 | 技术笔记 T001：Few-shot 提升简历解析鲁棒性 | notes/techniques.md |
 | 2026-05-26 | 修改 | PRD 补充 JD 解析子模块章节（用户故事 + 风险 + 黑话表） | docs/PRD.md |
 | 2026-05-26 | 新增 | Agent 引擎设计文档（6 工具 + ReAct 循环 + 异常处理 + Trace 格式） | docs/AGENT_DESIGN.md |
-| 2026-05-26 | 新增 | Agent ReAct Trace 模拟 Demo（字节豆包 JD × 秦俪萍简历，6 轮完整运行） | docs/DEMO_AGENT_TRACE.md |
+| 2026-05-26 | 新增 | Agent ReAct Trace 模拟 Demo（字节豆包 JD × 用户简历，6 轮完整运行） | docs/DEMO_AGENT_TRACE.md |
 | 2026-05-26 | 修改 | 开发计划更新：工具从 7→6，Agent 引擎拆为 Day 12-14 三步 | docs/DEVELOPMENT_PLAN.md |
 | 2026-05-26 | 新增 | Agent 工具 Schema 注册表（6 工具 OpenAI function calling 格式） | src/agent/tool_schemas.py |
 | 2026-05-26 | 新增 | Agent 工具实现（6 工具各含 Prompt + 构造逻辑 + Pydantic 校验） | src/agent/tools.py, src/agent/prompts.py |

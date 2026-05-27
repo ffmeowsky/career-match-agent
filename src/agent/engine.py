@@ -498,8 +498,8 @@ if __name__ == "__main__":
         email="test@example.com",
         education=[
             ResumeEducation(
-                school="CityU", degree=EducationLevel.MASTER,
-                major="工程管理", start_date="2025.09", end_date="2026.07",
+                school="Example University", degree=EducationLevel.MASTER,
+                major="Computer Science", start_date="2025.09", end_date="2026.07",
             )
         ],
     )
