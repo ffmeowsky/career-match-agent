@@ -1,0 +1,16 @@
+【某头部 AI 公司】大模型应用平台 AI 产品经理
+
+岗位职责：
+1. 负责公司大模型应用平台（Agent 编排、RAG 工作流、Prompt 管理）的产品规划与迭代
+2. 深入理解 Transformer 架构、RLHF、SFT 等大模型训练范式，能将这些技术概念转化为产品功能
+3. 与算法团队紧密协作，定义模型能力边界，输出可落地的产品方案
+
+任职要求：
+1. 本科及以上学历，计算机/AI 相关专业优先
+2. 熟悉 LLM 应用开发生态：LangChain, LlamaIndex, Semantic Kernel 至少用过一种
+3. 了解向量数据库技术（Milvus/Pinecone/Weaviate），理解 Embedding 和相似度检索原理
+4. 有 Agent 开发经验优先，熟悉 ReAct/Plan-Execute/Tool-use 等 Agent 架构
+5. 了解模型推理优化（vLLM/TGI/TensorRT-LLM）者加分
+6. 有 MLOps 或 LLMOps 平台使用经验者优先（如 LangSmith, Weights & Biases）
+7. 具备良好的产品 sense，能从技术能力推导用户场景，而非从竞品抄功能
+8. 有开源项目贡献或技术博客者更佳

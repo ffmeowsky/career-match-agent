@@ -1,0 +1,32 @@
+[Global AI Company] AI Product Manager - New Grad
+
+About Us
+We are building the next generation of enterprise AI agents that help teams automate complex workflows. Our platform is used by 500+ companies worldwide, from startups to Fortune 500.
+
+The Role
+As an AI PM new grad, you will work at the intersection of cutting-edge AI research and real customer problems. You will:
+- Own a product area from discovery to launch, working closely with engineering and design
+- Conduct user research with enterprise customers across US, Europe, and APAC
+- Define and track success metrics, making data-informed product decisions
+- Write clear, concise product specs that engineers love to read
+
+What We're Looking For
+- Bachelor's or Master's degree in CS, HCI, or related field (2025/2026 grad)
+- Strong understanding of LLMs, prompt engineering, and the current AI landscape
+- Excellent written and verbal communication in both English and Mandarin
+- Demonstrated product thinking: have you built something from scratch? Show us.
+- Comfortable with ambiguity and fast iteration cycles
+
+Nice to Have
+- Experience with AI/ML projects (course projects count!)
+- Familiarity with enterprise SaaS products
+- Basic coding ability (Python/JavaScript) to prototype ideas
+- Published technical articles or given talks about AI
+
+What We Offer
+- Competitive salary + equity
+- Flexible work arrangements (remote-friendly)
+- Annual learning budget ($2,000)
+- Regular team offsites (last one was in Bali 🌴)
+
+To apply, send your resume and a brief note about an AI product you admire to careers@company.com

@@ -1,0 +1,32 @@
+# Environment variables
+.env
+
+# Streamlit secrets (contains API keys)
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Outputs — keep .gitkeep, ignore generated .md
+outputs/*.md
+!outputs/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
