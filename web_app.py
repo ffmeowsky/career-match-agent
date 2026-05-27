@@ -16,12 +16,18 @@ import streamlit as st
 # Streamlit Cloud secrets → os.environ 桥接
 # （必须在导入 src 模块之前执行，因为 config.py 读 os.getenv）
 # ============================================================
-for _key in ["DEEPSEEK_API_KEY", "DEEPSEEK_BASE_URL", "MODEL_NAME"]:
-    try:
+_secrets_loaded = False
+try:
+    for _key in ["DEEPSEEK_API_KEY", "DEEPSEEK_BASE_URL", "MODEL_NAME"]:
         if _key in st.secrets:
             os.environ[_key] = st.secrets[_key]
-    except Exception:
-        pass  # 本地开发时 st.secrets 可能不存在
+            _secrets_loaded = True
+except Exception as _e:
+    st.warning(f"Streamlit Secrets 读取失败: {_e}。本地开发请确认 .env 文件存在。")
+
+# 兜底：OpenAI SDK 默认读 OPENAI_API_KEY，如果 DEEPSEEK_API_KEY 已配则同步设置
+if os.environ.get("DEEPSEEK_API_KEY") and not os.environ.get("OPENAI_API_KEY"):
+    os.environ["OPENAI_API_KEY"] = os.environ["DEEPSEEK_API_KEY"]
 
 from src.agent.engine import AgentEngine
 from src.models import JobDescription, RequirementType, Resume
