@@ -1,0 +1,59 @@
+张小明 Zhang Xiaoming
+邮箱：xiaoming.zhang@example.com | 电话：+86 138-0000-0000
+求职意向：AI 产品经理 / AI Agent 产品经理 / AI 产品运营
+
+【教育经历】
+东海大学 工程管理 硕士在读  2025.08 - 至今  GPA 3.8/4.3
+  AI/数据核心课程：系统工程的数据分析与人工智能、人工智能管理决策科学、工程管理者的智能制造、质量改进系统与方法
+江南科技大学 电信工程及管理 本科  2020.09 - 2024.06  GPA 3.6/5.0
+  技术核心课程：机器学习、高级语言程序设计C、Java语言程序设计、数据库原理及应用、管理信息系统
+  荣誉：校三等奖学金×2、优秀共青团员
+
+【AI 项目经历】
+1. CareerMatch Agent · 智能 JD 匹配求职助手（2026.05，独立完成）
+   AI Agent 应用，全栈独立开发，GitHub 开源，Streamlit 部署。约 2000 行代码。
+   - Agent 架构：选用 ReAct 模式 + Function Calling，Agent 在 Think→Act→Observe→Decide 循环中
+     根据 JD 类型动态调度 6 个分析工具（技能匹配、项目相关性、能力缺口、差异化优势、求职信生成、面试题预测）。
+   - 工程鲁棒性：所有 LLM 调用经 Pydantic 校验（14 模型 + 6 枚举）确保结构化输出稳定；
+     统一 llm_client 含 3 次指数退避重试；Agent 设 max_iterations 防死循环。
+   - Vibe Coding：全程 Claude Code + DeepSeek 独立编码部署；探索「工作区驱动 + 构建循环 4 步走」开发方法。
+   技术栈：Python、ReAct Agent、Function Calling、Pydantic、Streamlit、pypdf。
+
+2. OrderGo 2.0 · 校园食堂智能预点餐微信小程序（AI 升级版）（2026.03-2026.05）
+   产品负责人 / 全流程独立 Owner，27 名真实用户验证，GitHub 开源。
+   - AI 升级 3 个核心功能：智能菜品推荐（用户历史+情境+40道菜标签做个性化）；
+     自然语言点单（"想吃辣的预算25内"→AI解析返回Top5）；AI 取餐时段建议（综合实时拥堵+取餐习惯）。
+   - AI 兜底设计：所有 AI 模块保留 fallback 到 v1 规则逻辑，LLM 调用失败时自动降级保证产品稳定。
+   - 评估迭代：自建 50 条测试集（5 种用户画像×10 种场景），LLM-as-a-Judge 盲评，
+     综合分 1.4→4.1（+199%）、个性化 1.4→3.9，v2.1 对 v1 胜率 100%。
+   技术栈：微信小程序原生开发、Python（自建后端零外部依赖）、SQLite、DeepSeek。
+
+3. 大语言模型股票预测系统（LLM Fine-tuning 课程项目，研究生）
+   核心成员 / AI 技术选型主导，Qwen2.5、LoRA、4-bit 量化。
+   - 关键判断：Qwen2.5-1.5B vs 7B 双模型 A/B 实验，发现 7B「懒惰记忆」过拟合，
+     最终选 1.5B 模型（泛化更鲁棒），为团队节省 50% GPU 资源。
+   - 四维评估框架：Loss收敛+推理显存+单次耗时+市场趋势对比；LoRA+4bit量化，仅训练0.59%参数，显存压缩75%。
+   技术栈：PyTorch、HuggingFace、PEFT(LoRA)、BitsAndBytes、Qwen2.5、GTX 1650。
+
+【产品/商业实战经历】
+U.S. Stroller 制造业精益转型咨询案例（研究生课程标杆案例）
+   项目组长，5 人团队，8000+ 字英文报告。
+   - 为年营收450万美元、净利率仅2%的美国童车企业诊断运营问题；原创「混合智能单元」策略，降低50%资本投入。
+   - 用 Little's Law、EOQ 等模型量化收益，论证可释放 119 万美元一次性现金流、年化 35.8 万美元节省。
+电商店铺运营（兼职/实践，2021.06-2022.06）
+   数据驱动电商运营：竞品调研、流量监控、产品策略调整；运用推广工具优化浏览量与点击率，实现月销量增长10%。
+
+【校园经历】
+心理学社 主席/部长/干事（2020.10-2023.09）
+   三年完成「干事→部长→主席」晋升，管理 100+ 成员团队；招聘培训新人 20+；
+   一学期完成 2 个校级+6 个院级活动累计参与超1000人；参与公众号运营涨粉30%。
+
+【AI 技能 & 工具栈】
+大模型实操：GPT-5、Claude Opus、Gemini、DeepSeek、Qwen、Kimi、豆包。
+Agent/Workflow 平台：Coze、Dify、n8n。
+Vibe Coding 工具栈：Claude Code、Cursor、GitHub Copilot、Trae。
+Prompt 工程 & 评估：Zero-shot/Few-shot/CoT/Role-play/XML结构化/Prompt Chaining；LLM-as-a-Judge、Promptfoo、Ragas。
+AI 微调 & RAG：LoRA、QLoRA、4-bit NF4 量化、PEFT；Embedding(BGE-M3/OpenAI)、Vector DB、Hybrid Search、Rerank。
+通用技能：Python、SQL、Excel、PowerPoint、Matlab、Java、Django、ECharts。
+
+【语言】CET-6

@@ -23,6 +23,7 @@ from src.agent.tools import (
     predict_interview_questions,
     score_project_relevance,
     score_skill_match,
+    suggest_resume_edits,
 )
 from src.models import (
     CoverLetter,
@@ -33,6 +34,7 @@ from src.models import (
     NextStep,
     ProjectRelevance,
     Resume,
+    ResumeEdit,
     SkillGap,
     UniqueAdvantage,
 )
@@ -52,6 +54,7 @@ AGENT_SYSTEM_PROMPT = """你是一个求职分析 Agent 的决策中枢。你会
 4. extract_unique_advantages — 提炼候选人的 Top 3 差异化优势
 5. predict_interview_questions — 预测 5 道面试题 + 答法要点
 6. generate_cover_letter — 生成个性化求职信（可选，不自动调用）
+7. suggest_resume_edits — 简历定制优化建议（可选，不自动调用）
 
 ## 决策规则（优先级从高到低）
 
@@ -61,7 +64,7 @@ AGENT_SYSTEM_PROMPT = """你是一个求职分析 Agent 的决策中枢。你会
 4. 如果技能匹配已完成 + 还没做优势提取 → 调 extract_unique_advantages
 5. 如果缺口和优势都已完成 + 还没预测面试题 → 调 predict_interview_questions
 6. 如果以上都完成 + JD 信息充足 → 输出 next_action="finish"
-7. generate_cover_letter 不自动调用——除非用户明确请求
+7. generate_cover_letter 和 suggest_resume_edits 不自动调用——除非用户明确请求
 8. 最多 15 轮迭代，达到上限时输出 finish
 
 ## 输出格式
@@ -109,6 +112,7 @@ class AgentEngine:
         self._advantages: list[UniqueAdvantage] = []
         self._interview_questions: list[InterviewQuestion] = []
         self._cover_letter: CoverLetter | None = None
+        self._resume_edits: list[ResumeEdit] = []
 
     # ============================================================
     # 主循环
@@ -195,7 +199,8 @@ class AgentEngine:
         valid_actions = {
             "score_project_relevance", "score_skill_match",
             "identify_skill_gap", "extract_unique_advantages",
-            "predict_interview_questions", "generate_cover_letter", "finish",
+            "predict_interview_questions", "generate_cover_letter",
+            "suggest_resume_edits", "finish",
         }
         if next_action not in valid_actions:
             logger.warning(f"LLM 返回非法 action: {next_action}，降级为 finish")
@@ -225,6 +230,7 @@ class AgentEngine:
             "has_advantages": len(self._advantages) > 0,
             "has_interview_questions": len(self._interview_questions) > 0,
             "has_cover_letter": self._cover_letter is not None,
+            "has_resume_edits": len(self._resume_edits) > 0,
             "user_wants_cover_letter": self.user_wants_cover_letter,
             "iteration": self.iteration,
             "max_iterations": self.max_iterations,
@@ -307,6 +313,16 @@ class AgentEngine:
                 self._match_score,  # type: ignore[arg-type]
             )
             self._cover_letter = result
+            return result
+
+        elif tool_name == "suggest_resume_edits":
+            result = suggest_resume_edits(
+                resume=self.resume,
+                jd=self.jd,
+                match_score=self._match_score,  # type: ignore[arg-type]
+                skill_gaps=self._skill_gaps,
+            )
+            self._resume_edits = result
             return result
 
         else:
@@ -436,6 +452,7 @@ class AgentEngine:
             interview_questions=interview_questions,
             cover_letter=cover_letter,
             next_steps=next_steps,
+            resume_edits=self._resume_edits,
             model_used="deepseek-chat",
             generated_at=now_iso,
         )

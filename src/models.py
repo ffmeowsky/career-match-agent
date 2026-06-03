@@ -233,6 +233,15 @@ class SkillGap(BaseModel):
     confidence: Confidence = Field(description="缺口判断的置信度")
 
 
+class ResumeEdit(BaseModel):
+    """简历定制优化建议——suggest_resume_edits 的输出单元。"""
+    location: str = Field(description="改哪里，如'项目经历-CanteenGo 第2条'或'技能栈'")
+    original: str = Field(description="简历中的原文（如无明确原文则写'（简历中未提及）'）")
+    suggested: str = Field(description="建议改写后的文本")
+    reason: str = Field(description="为什么这样改更匹配该 JD——要具体到 JD 的某个要求")
+    priority: Confidence = Field(description="优先级 high/medium/low——high=直接影响匹配度的关键改动")
+
+
 class InterviewQuestion(BaseModel):
     """面试预测题。"""
     question: str = Field(description="面试题原文")
@@ -286,6 +295,10 @@ class MatchReport(BaseModel):
     next_steps: list[NextStep] = Field(default_factory=list, description="下一步行动建议")
     model_used: str = Field(default="deepseek-chat", description="生成报告使用的模型")
     generated_at: str = Field(default="", description="报告生成时间 ISO 格式")
+    resume_edits: list[ResumeEdit] = Field(
+        default_factory=list,
+        description="简历定制优化建议（可选，用户主动触发时生成）",
+    )
 
 
 # ============================================================

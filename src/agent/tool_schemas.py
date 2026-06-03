@@ -124,6 +124,21 @@ SCHEMA_GENERATE_COVER_LETTER = {
 # 汇总
 # ============================================================
 
+SCHEMA_SUGGEST_RESUME_EDITS = {
+    "type": "function",
+    "function": {
+        "name": "suggest_resume_edits",
+        "description": (
+            "针对目标 JD，给出简历的逐条定制优化建议（原文→改写→理由）。"
+            "只基于简历已有事实做重组/突出/换措辞，绝不编造经历。"
+            "什么时候用：用户主动请求'优化简历/针对这个岗位改简历'时。"
+            "什么时候不用：默认不自动触发——这是用户主动操作的功能。"
+            "依赖：需要先有 match_score 和 skill_gaps（即先跑完匹配分析）。"
+        ),
+        "parameters": {"type": "object", "properties": {}, "required": []},
+    },
+}
+
 TOOL_SCHEMAS: list[dict] = [
     SCHEMA_SCORE_SKILL_MATCH,
     SCHEMA_SCORE_PROJECT_RELEVANCE,
@@ -131,6 +146,7 @@ TOOL_SCHEMAS: list[dict] = [
     SCHEMA_EXTRACT_UNIQUE_ADVANTAGES,
     SCHEMA_PREDICT_INTERVIEW_QUESTIONS,
     SCHEMA_GENERATE_COVER_LETTER,
+    SCHEMA_SUGGEST_RESUME_EDITS,
 ]
 
 # 工具名 → Schema 映射（engine 快速查找）

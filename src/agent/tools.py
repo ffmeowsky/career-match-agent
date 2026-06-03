@@ -1,4 +1,4 @@
-"""Agent 工具实现——6 个工具，每个独立可测。
+"""Agent 工具实现——7 个工具，每个独立可测。
 
 每个工具的接口：输入 Pydantic 对象 → LLM 调用 → 输出 Pydantic 对象。
 工具之间不互相调用（单一职责），由 engine.py 统一调度。
@@ -18,6 +18,7 @@ from src.agent.prompts import (
     PREDICT_INTERVIEW_QUESTIONS_PROMPT,
     SCORE_PROJECT_RELEVANCE_PROMPT,
     SCORE_SKILL_MATCH_PROMPT,
+    SUGGEST_RESUME_EDITS_PROMPT,
 )
 from src.models import (
     Confidence,
@@ -30,6 +31,7 @@ from src.models import (
     MatchScore,
     ProjectRelevance,
     Resume,
+    ResumeEdit,
     SkillGap,
     UniqueAdvantage,
 )
@@ -470,3 +472,86 @@ def generate_cover_letter(
     except Exception as e:
         logger.error(f"generate_cover_letter Pydantic 校验失败: {e}")
         raise ValueError(f"求职信生成结果格式异常: {e}") from e
+
+
+# ============================================================
+# Tool 7: suggest_resume_edits
+# ============================================================
+
+def suggest_resume_edits(
+    resume: Resume,
+    jd: JobDescription,
+    match_score: MatchScore,
+    skill_gaps: list[SkillGap],
+) -> list[ResumeEdit]:
+    """简历定制优化建议——针对目标 JD，给出逐条「原文→改写→理由」建议。
+
+    Args:
+        resume: 简历对象。
+        jd: 目标 JD。
+        match_score: 8 维匹配结果（用于定位低分维度，优先优化）。
+        skill_gaps: 能力缺口列表（用于针对性优化）。
+
+    Returns:
+        list[ResumeEdit]: 3-5 条优化建议，按优先级排序。
+    """
+    logger.info(f"工具调用: suggest_resume_edits | 候选人={resume.name} | 目标={jd.company}")
+
+    # 定位低分维度，让建议有的放矢
+    low_dims = [
+        f"{d.label}: {d.score}分 - {d.evidence}"
+        for d in match_score.dimensions
+        if d.score < 75
+    ]
+
+    context = {
+        "jd_company": jd.company,
+        "jd_position": jd.role,
+        "jd_requirements": [
+            {"content": r.content, "type": r.type.value, "category": r.category}
+            for r in jd.requirements
+        ],
+        "match_overall": match_score.overall,
+        "low_dimensions": low_dims,
+        "skill_gaps": [{"gap": g.gap, "impact": g.impact} for g in skill_gaps],
+        "resume": {
+            "name": resume.name,
+            "target_role": resume.target_role,
+            "projects": [
+                {"name": p.name, "role": p.role, "description": p.description,
+                 "highlights": p.highlights}
+                for p in resume.projects
+            ],
+            "skills": [s.name for s in resume.skills],
+        },
+    }
+
+    user_prompt = (
+        "请针对以下目标岗位，为候选人简历给出 3-5 条定制优化建议：\n\n"
+        f"<context>\n{json.dumps(context, indent=2, ensure_ascii=False)}\n</context>"
+    )
+
+    data = chat_json(SUGGEST_RESUME_EDITS_PROMPT, user_prompt)
+
+    try:
+        results = []
+        for item in data:
+            prio = item.get("priority", "medium")
+            if prio not in {"high", "medium", "low"}:
+                prio = "medium"
+            results.append(ResumeEdit(
+                location=item.get("location", ""),
+                original=item.get("original", "（简历中未明确体现）"),
+                suggested=item.get("suggested", ""),
+                reason=item.get("reason", ""),
+                priority=Confidence(prio),
+            ))
+        # 按优先级排序：high → medium → low
+        order = {"high": 0, "medium": 1, "low": 2}
+        results.sort(key=lambda e: order.get(e.priority.value, 1))
+        logger.info(f"suggest_resume_edits 完成 | 生成 {len(results)} 条建议")
+        return results
+
+    except Exception as e:
+        logger.error(f"suggest_resume_edits Pydantic 校验失败: {e}")
+        raise ValueError(f"简历优化建议结果格式异常: {e}") from e

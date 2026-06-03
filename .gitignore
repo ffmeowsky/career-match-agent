@@ -23,6 +23,12 @@ env/
 *.swp
 *.swo
 
+# Personal data — never push
+ai_eval/my_resume.txt
+
+# Generated evaluation reports
+ai_eval/results/
+
 # Outputs — keep .gitkeep, ignore generated .md
 outputs/*.md
 !outputs/.gitkeep

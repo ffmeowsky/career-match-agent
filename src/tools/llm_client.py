@@ -9,8 +9,10 @@
 """
 
 import json
+import os
 import time
 
+import httpx
 from loguru import logger
 from openai import OpenAI
 
@@ -21,6 +23,10 @@ from src.config import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL, MODEL_NAME
 # ============================================================
 
 MAX_RETRIES = 3  # 最多重试次数（总共 4 次尝试）
+
+# 从环境变量读取代理配置
+HTTPS_PROXY = os.getenv("HTTPS_PROXY", "") or os.getenv("https_proxy", "")
+HTTP_PROXY = os.getenv("HTTP_PROXY", "") or os.getenv("http_proxy", "")
 
 
 # ============================================================
@@ -40,7 +46,20 @@ def _call_api(messages: list[dict], temperature: float = 0.1) -> str:
     Raises:
         openai 相关异常：网络、认证、限流等。
     """
-    client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_BASE_URL)
+    # 构造带代理的 httpx 客户端
+    http_kwargs: dict = {}
+    if HTTPS_PROXY:
+        http_kwargs["proxy"] = HTTPS_PROXY
+        logger.debug(f"使用代理: {HTTPS_PROXY}")
+    else:
+        logger.debug("未检测到代理，直连 API")
+
+    http_client = httpx.Client(**http_kwargs)
+    client = OpenAI(
+        api_key=DEEPSEEK_API_KEY,
+        base_url=DEEPSEEK_BASE_URL,
+        http_client=http_client,
+    )
 
     t0 = time.perf_counter()
     response = client.chat.completions.create(

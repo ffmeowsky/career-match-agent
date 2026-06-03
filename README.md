@@ -25,7 +25,7 @@
 
 ```bash
 # 1. 克隆仓库
-git clone git@github.com:ffmeowsky/career-match-agent.git
+git clone git@github.com:USERNAME/career-match-agent.git
 cd career-match-agent
 
 # 2. 安装依赖
@@ -130,7 +130,7 @@ cp .streamlit/secrets.toml.example .streamlit/secrets.toml
 
 ## 作者
 
-**ffmeowsky**
+**USERNAME**
 
 ---
 

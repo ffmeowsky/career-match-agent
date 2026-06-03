@@ -16,14 +16,23 @@ import streamlit as st
 # Streamlit Cloud secrets → os.environ 桥接
 # （必须在导入 src 模块之前执行，因为 config.py 读 os.getenv）
 # ============================================================
-_secrets_loaded = False
 try:
     for _key in ["DEEPSEEK_API_KEY", "DEEPSEEK_BASE_URL", "MODEL_NAME"]:
         if _key in st.secrets:
             os.environ[_key] = st.secrets[_key]
-            _secrets_loaded = True
-except Exception as _e:
-    st.warning(f"Streamlit Secrets 读取失败: {_e}。本地开发请确认 .env 文件存在。")
+except Exception:
+    # 本地开发没有 secrets.toml，正常情况，静默 fallback 到 .env
+    pass
+
+# 检查是否已加载到有效的 API Key
+_api_ok = bool(os.environ.get("DEEPSEEK_API_KEY"))
+if not _api_ok:
+    # 尝试从 .env 加载
+    from dotenv import load_dotenv
+    load_dotenv()
+    _api_ok = bool(os.environ.get("DEEPSEEK_API_KEY"))
+    if not _api_ok:
+        st.warning("未检测到 DEEPSEEK_API_KEY，请确认 .env 文件或 Streamlit Secrets 已配置。")
 
 # 兜底：OpenAI SDK 默认读 OPENAI_API_KEY，如果 DEEPSEEK_API_KEY 已配则同步设置
 if os.environ.get("DEEPSEEK_API_KEY") and not os.environ.get("OPENAI_API_KEY"):
@@ -184,6 +193,11 @@ if analyze_clicked and resume_ready and jd_ready:
             )
             report, trace = engine.run()
 
+            # 存进 session_state，供"优化简历"按钮跨 rerun 使用
+            st.session_state["report"] = report
+            st.session_state["resume"] = resume
+            st.session_state["jd"] = jd
+
             agent_status.update(
                 label=f"分析完成！共 {len(trace)} 轮",
                 state="complete",
@@ -225,3 +239,55 @@ if analyze_clicked and resume_ready and jd_ready:
             Path(_tmp_path).unlink()
         except Exception:
             pass
+
+
+# ============================================================
+# 简历优化建议区（独立于分析块，靠 session_state 存活）
+# ============================================================
+if "report" in st.session_state:
+    st.divider()
+    st.subheader("📝 针对这个岗位优化简历")
+    st.caption(
+        "基于上面的匹配分析，给出逐条「原文→改写→理由」建议。"
+        "只基于你的真实经历重组，不编造。"
+    )
+
+    if st.button("✨ 生成简历优化建议", type="primary", use_container_width=True):
+        _report = st.session_state["report"]
+        _resume = st.session_state["resume"]
+        _jd = st.session_state["jd"]
+
+        with st.spinner("正在分析简历可优化的地方..."):
+            from src.agent.tools import suggest_resume_edits
+
+            try:
+                edits = suggest_resume_edits(
+                    resume=_resume,
+                    jd=_jd,
+                    match_score=_report.match_score,
+                    skill_gaps=_report.skill_gaps,
+                )
+                st.session_state["resume_edits"] = edits
+            except Exception as e:
+                st.error(f"生成优化建议失败：{e}")
+
+    # 展示建议（靠 session_state 存活，翻看 expander 时不消失）
+    if "resume_edits" in st.session_state:
+        edits = st.session_state["resume_edits"]
+        st.success(f"找到 {len(edits)} 处可优化的地方")
+
+        prio_emoji = {"high": "🔴", "medium": "🟡", "low": "🟢"}
+        for i, edit in enumerate(edits, 1):
+            emoji = prio_emoji.get(edit.priority.value, "🟡")
+            with st.expander(
+                f"{emoji} 建议 {i}：{edit.location}",
+                expanded=(edit.priority.value == "high"),
+            ):
+                c1, c2 = st.columns(2)
+                with c1:
+                    st.markdown("**改前：**")
+                    st.text(edit.original)
+                with c2:
+                    st.markdown("**改后：**")
+                    st.text(edit.suggested)
+                st.info(f"💡 为什么这么改：{edit.reason}")
